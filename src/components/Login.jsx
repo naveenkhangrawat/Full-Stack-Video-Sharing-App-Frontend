@@ -28,6 +28,11 @@ function Login() {
             const loginResponse = await loginUser({username: data?.username, password: data?.password});
             if(loginResponse?.success){
                 dispatch(login(loginResponse?.data?.user));
+
+                getUserChannelProfile(data?.username).then((response) => {
+                    dispatch(setChannelInfo(response?.data?.channelData))
+                }).catch((error) => {console.log(error)});
+
                 navigate("/")
             }
         } catch (error) {

@@ -5,11 +5,12 @@ import Button from './Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import ImageUploadElement from './ImageUploadElement';
-import { registerUser, loginUser } from '../utils/fetchData/user';
+import { registerUser, loginUser, getUserChannelProfile } from '../utils/fetchData/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { isLoadingFalse, isLoadingTrue } from '../reduxTK/configSlice';
 import {login} from "../reduxTK/userSlice";
 import Loader from './Loader';
+import { setChannelInfo } from '../reduxTK/channelSlice';
 
 
 function Signup() {
@@ -33,6 +34,11 @@ function Signup() {
 
                 if(loginResponse?.success){
                     dispatch(login(loginResponse?.data?.user));
+
+                    getUserChannelProfile(data?.username).then((response) => {
+                        dispatch(setChannelInfo(response?.data?.channelData))
+                    }).catch((error) => {console.log(error)});
+
                     navigate("/");
                 } else {
                     navigate("/login");
