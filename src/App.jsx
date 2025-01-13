@@ -27,6 +27,7 @@ import { isLoadingFalse, isLoadingTrue } from './reduxTK/configSlice'
 import SearchVideosPage from './pages/SearchVideosPage'
 import PlaylistVideosPage from './pages/PlaylistVideosPage'
 import { emptyChannelInfo, setChannelInfo } from './reduxTK/channelSlice'
+import HomePageLoadingSkeleton from './components/HomePageLoadingSkeleton'
 
 
 function App() {
@@ -142,7 +143,7 @@ function App() {
     )
   )
 
-  const [loading, setLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -181,7 +182,7 @@ function App() {
       } 
     }
 
-    setLoading(true);
+    setIsLoaded(true);
   }
 
   useEffect(() => {
@@ -196,7 +197,9 @@ function App() {
 
   return (
     <>
-      {loading && (
+      {!isLoaded ? (
+        <HomePageLoadingSkeleton />
+      ) : (
         <>
         <RouterProvider router={router} />
         <Toaster 
